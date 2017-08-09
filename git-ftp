@@ -421,6 +421,7 @@ fire_upload_buffer() {
 	set_default_curl_options
 	CURL_ARGS+=(--ftp-create-dirs)
 	CURL_ARGS+=(-K "$TMP_CURL_UPLOAD_FILE")
+	write_log "Executing curl with args: ${CURL_ARGS[@]}"
 	curl "${CURL_ARGS[@]}"
 	check_exit_status "Could not upload files." "$ERROR_UPLOAD"
 }
@@ -431,8 +432,10 @@ delete_file() {
 	CURL_ARGS+=(-Q "${REMOTE_DELETE_CMD}${REMOTE_PATH}${FILENAME}")
 	CURL_ARGS+=("$REMOTE_BASE_URL")
 	if [ "${REMOTE_CMD_OPTIONS[0]}" = "-v" ]; then
+		write_log "Executing curl with args: ${CURL_ARGS[@]}"
 		curl "${CURL_ARGS[@]}"
 	else
+		write_log "Executing curl with args: ${CURL_ARGS[@]}"
 		curl "${CURL_ARGS[@]}" > /dev/null 2>&1
 	fi
 	if [ $? -ne 0 ]; then
@@ -453,8 +456,10 @@ fire_delete_buffer() {
 	set_default_curl_options
 	CURL_ARGS+=(-K "$TMP_CURL_DELETE_FILE")
 	if [ "${REMOTE_CMD_OPTIONS[0]}" = "-v" ]; then
+		write_log "Executing curl with args: ${CURL_ARGS[@]}"
 		curl "${CURL_ARGS[@]}"
 	else
+		write_log "Executing curl with args: ${CURL_ARGS[@]}"
 		curl "${CURL_ARGS[@]}" > /dev/null 2>&1
 	fi
 	if [ $? -ne 0 ]; then
@@ -466,6 +471,7 @@ get_file_content() {
 	local SRC_FILE="$1"
 	set_default_curl_options
 	CURL_ARGS+=("$REMOTE_BASE_URL/${REMOTE_PATH}${SRC_FILE}")
+	write_log "Executing curl with args: ${CURL_ARGS[@]}"
 	curl "${CURL_ARGS[@]}"
 }
 
@@ -1286,6 +1292,7 @@ check_remote_access() {
 	set_default_curl_options
 	CURL_ARGS+=(--ftp-create-dirs)
 	CURL_ARGS+=("$REMOTE_BASE_URL/$REMOTE_PATH")
+	write_log "Executing curl with args: ${CURL_ARGS[@]}"
 	curl "${CURL_ARGS[@]}" > /dev/null
 	check_exit_status "Can't access remote '$REMOTE_BASE_URL_DISPLAY'" "$ERROR_DOWNLOAD"
 }

@@ -400,6 +400,7 @@ upload_file() {
 	CURL_ARGS+=(-T "$SRC_FILE")
 	CURL_ARGS+=(--ftp-create-dirs)
 	CURL_ARGS+=("$REMOTE_BASE_URL/${REMOTE_PATH}${DEST_FILE}")
+	write_log "Executing curl with args: ${CURL_ARGS[@]}"
 	curl "${CURL_ARGS[@]}"
 	check_exit_status "Could not upload file: '${REMOTE_PATH}$DEST_FILE'." "$ERROR_UPLOAD"
 }
@@ -1351,7 +1352,7 @@ main() {
 	exit 0
 }
 
-write_log "git-ftp version $VERSION running on $(uname -a)"
+write_log "git-ftp (Zaotech) version $VERSION running on $(uname -a)"
 
 # 2 args are needed: action and url
 if [ $# = 0 ]; then
